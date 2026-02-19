@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Муринет поиск</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial;margin:0}
+.top{padding:15px;border-bottom:1px solid #ddd;display:flex;align-items:center}
+.logo{font-size:28px;font-weight:bold;cursor:pointer}
+.logo .m{color:red}.logo .t{color:black}
+input{margin-left:20px;padding:10px;width:400px;border-radius:20px;border:1px solid #ccc}
+
+.tabs{margin:20px}
+.tab{margin-right:20px;cursor:pointer}
+.tab.active{font-weight:bold}
+
+.result{margin:20px}
+a{font-size:18px;color:#1a0dab;text-decoration:none}
+p{margin:5px 0;color:#555}
+
+.images img{width:200px;margin:10px;border-radius:10px}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+<div class="logo" onclick="home()">
+<span class="m">М</span><span class="t">уринет</span>
+</div>
+<input id="searchInput">
+</div>
+
+<div class="tabs">
+<span class="tab active" onclick="showAll()">Все</span>
+<span class="tab" onclick="showImages()">Картинки</span>
+<span class="tab" onclick="showTrends()">Тренды</span>
+</div>
+
+<div id="results"></div>
+
+<script>
+
+function home(){window.location.href="index.html"}
+
+let params=new URLSearchParams(location.search);
+let q=(params.get("q")||"").toLowerCase();
+document.getElementById("searchInput").value=q;
+
+let r=document.getElementById("results");
+
+function showAll(){
+r.innerHTML="";
+
+if(q.includes("перевод")){
+r.innerHTML+=`<div class="result">
+<a href="https://murinost.github.io">Муринский переводчик</a>
+<p>Официальный сайт переводчика</p></div>`;
+}
+
+if(q.includes("мытищинский")){
+r.innerHTML+=`<div class="result">
+<a href="https://murinost.github.io/mytischi.io">Мытищинский переводчик</a>
+<p>Переводчик мытищинского языка</p></div>`;
+}
+
+if(q.includes("фог")||q.includes("мурино")||q.includes("меллстрой")){
+r.innerHTML+=`<div class="result">
+<a href="wiki.html?topic=${q}">ВикиМурино — статья</a>
+<p>Информация из ВикиМурино</p></div>`;
+}
+
+if(r.innerHTML==="") r.innerHTML="<h3>Ничего не найдено</h3>";
+}
+
+function showImages(){
+r.innerHTML=`<div class="images">
+<img src="https://i.ytimg.com/vi/GkD7IOkE-a8/maxresdefault.jpg">
+<img src="https://spb.101novostroyka.ru/upload/medialibrary/660/6604a07fea5a92e47ba520f911b169a9.jpg">
+<img src="https://static.wikia.nocookie.net/db1da172-4b29-4405-973b-fb65f447b8aa/scale-to-width/755">
+</div>`;
+}
+
+function showTrends(){
+r.innerHTML=`<h3>Популярное</h3>
+<p onclick="location.href='results.html?q=меллстрой'">Меллстрой</p>
+<p onclick="location.href='results.html?q=фог мурино'">Фог Мурино</p>
+<p onclick="location.href='results.html?q=переводчик'">Переводчик</p>`;
+}
+
+showAll();
+
+</script>
+</body>
+</html>
