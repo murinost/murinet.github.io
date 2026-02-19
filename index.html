@@ -6,18 +6,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{font-family:Arial;text-align:center;margin:0}
+body{font-family:Arial;margin:0;text-align:center;background:white}
 
-.logo{font-size:60px;margin-top:150px;font-weight:bold}
-.logo .m{color:red}
-.logo .t{color:black}
+/* логотип */
+.logo{font-size:60px;margin-top:120px;font-weight:bold}
+.logo .m{color:red}.logo .t{color:black}
 
+/* поиск */
+.search-box{margin-top:20px}
 input{
-width:60%;max-width:600px;padding:15px;
-font-size:18px;border-radius:30px;border:1px solid #ccc;
+width:60%;max-width:600px;padding:15px;font-size:18px;
+border-radius:30px;border:1px solid #ccc;
 }
 
-button{padding:12px 25px;margin-top:15px;border:none;border-radius:20px;cursor:pointer}
+/* подсказки */
+.suggestions{
+position:absolute;background:white;width:60%;max-width:600px;
+left:50%;transform:translateX(-50%);
+border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);
+display:none;text-align:left
+}
+.suggest-item{padding:12px;cursor:pointer}
+.suggest-item:hover{background:#f2f2f2}
 
 /* профиль */
 .profile{
@@ -40,6 +50,10 @@ display:none;position:fixed;top:120px;right:20px;background:white;padding:15px;b
 max-width:250px;box-shadow:0 0 15px rgba(0,0,0,0.2)
 }
 .history p{cursor:pointer;margin:5px 0}
+
+/* тренды */
+.trends{margin-top:60px;color:#555}
+.trends p{cursor:pointer}
 </style>
 </head>
 
@@ -66,24 +80,26 @@ max-width:250px;box-shadow:0 0 15px rgba(0,0,0,0.2)
 
 <div id="historyBox" class="history"></div>
 
-<!-- поиск -->
+<!-- логотип -->
 <div class="logo">
 <span class="m">М</span><span class="t">уринет</span>
 </div>
 
-<br>
-<input id="q" placeholder="Найти в Муринете">
-<br>
-<button onclick="goSearch()">Найти</button>
+<!-- поиск -->
+<div class="search-box">
+<input id="searchInput" placeholder="Найти в Муринете">
+<div id="suggestions" class="suggestions"></div>
+</div>
+
+<!-- тренды -->
+<div class="trends">
+<h3>Тренды</h3>
+<p onclick="goSearch('меллстрой')">Меллстрой</p>
+<p onclick="goSearch('фог мурино')">Фог Мурино</p>
+<p onclick="goSearch('переводчик')">Переводчик</p>
+</div>
 
 <script>
-
-// переход к поиску
-function goSearch(){
-let q=document.getElementById("q").value;
-saveSearch(q);
-window.location.href="search.html?q="+encodeURIComponent(q);
-}
 
 // профиль
 let avatar=document.getElementById("avatar");
@@ -99,14 +115,13 @@ let newAvatar=document.getElementById("newAvatar").value;
 
 if(newName){
 localStorage.setItem("murinet_name",newName);
-name.innerText=newName;
-menuName.innerText=newName;
+name.innerText=newName;menuName.innerText=newName;
 }
 if(newAvatar){
 localStorage.setItem("murinet_avatar",newAvatar);
 avatar.src=newAvatar;
 }
-document.getElementById("editProfile").style.display="none";
+editProfile().style="none";
 }
 
 window.onload=function(){
@@ -116,29 +131,54 @@ if(savedName){name.innerText=savedName;menuName.innerText=savedName}
 if(savedAvatar){avatar.src=savedAvatar}
 }
 
-// история поиска
-function saveSearch(query){
-let history=JSON.parse(localStorage.getItem("murinet_history")||"[]");
-history.unshift(query);
-history=history.slice(0,10);
-localStorage.setItem("murinet_history",JSON.stringify(history));
+// история
+function saveHistory(q){
+let h=JSON.parse(localStorage.getItem("history")||"[]");
+h.unshift(q);
+localStorage.setItem("history",JSON.stringify(h.slice(0,10)));
 }
 
 function showHistory(){
 let box=document.getElementById("historyBox");
-let history=JSON.parse(localStorage.getItem("murinet_history")||"[]");
+let history=JSON.parse(localStorage.getItem("history")||"[]");
 box.innerHTML="<b>История поиска</b>";
 history.forEach(q=>{
-box.innerHTML+=`<p onclick="repeatSearch('${q}')">${q}</p>`;
+box.innerHTML+=`<p onclick="goSearch('${q}')">${q}</p>`;
 });
 box.style.display="block";
 }
 
-function repeatSearch(q){
-window.location.href="search.html?q="+encodeURIComponent(q);
+// подсказки
+const suggestions=["муринский переводчик","перевод","мытищинский переводчик","фог мурино","мурино","меллстрой"];
+const input=document.getElementById("searchInput");
+const box=document.getElementById("suggestions");
+
+input.addEventListener("input",()=>{
+let value=input.value.toLowerCase();
+box.innerHTML="";
+if(!value){box.style.display="none";return;}
+
+suggestions.filter(s=>s.includes(value)).forEach(s=>{
+let div=document.createElement("div");
+div.className="suggest-item";
+div.innerText=s;
+div.onclick=()=>goSearch(s);
+box.appendChild(div);
+});
+box.style.display="block";
+});
+
+// enter
+input.addEventListener("keypress",e=>{
+if(e.key==="Enter") goSearch(input.value);
+});
+
+function goSearch(q){
+if(!q) return;
+saveHistory(q);
+window.location.href="results.html?q="+encodeURIComponent(q);
 }
 
 </script>
-
 </body>
 </html>
