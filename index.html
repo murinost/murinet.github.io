@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Муринет</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  font-family: Arial;
+  text-align:center;
+  margin:0;
+}
+.logo{
+  font-size:60px;
+  margin-top:150px;
+  font-weight:bold;
+}
+.logo .m{color:red;}
+.logo .t{color:black;}
+
+input{
+  width:60%;
+  max-width:600px;
+  padding:15px;
+  font-size:18px;
+  border-radius:30px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:12px 25px;
+  margin-top:15px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">
+  <span class="m">М</span><span class="t">уринет</span>
+</div>
+
+<br>
+
+<input id="q" placeholder="Найти в Муринете">
+<br>
+<button onclick="goSearch()">Найти</button>
+
+<script>
+function goSearch(){
+  let q=document.getElementById("q").value;
+  window.location.href="search.html?q="+encodeURIComponent(q);
+}
+</script>
+
+</body>
+</html>
