@@ -4,56 +4,140 @@
 <meta charset="UTF-8">
 <title>Муринет</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{
-  font-family: Arial;
-  text-align:center;
-  margin:0;
-}
-.logo{
-  font-size:60px;
-  margin-top:150px;
-  font-weight:bold;
-}
-.logo .m{color:red;}
-.logo .t{color:black;}
+body{font-family:Arial;text-align:center;margin:0}
+
+.logo{font-size:60px;margin-top:150px;font-weight:bold}
+.logo .m{color:red}
+.logo .t{color:black}
 
 input{
-  width:60%;
-  max-width:600px;
-  padding:15px;
-  font-size:18px;
-  border-radius:30px;
-  border:1px solid #ccc;
+width:60%;max-width:600px;padding:15px;
+font-size:18px;border-radius:30px;border:1px solid #ccc;
 }
 
-button{
-  padding:12px 25px;
-  margin-top:15px;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
+button{padding:12px 25px;margin-top:15px;border:none;border-radius:20px;cursor:pointer}
+
+/* профиль */
+.profile{
+position:fixed;top:15px;right:20px;display:flex;gap:10px;cursor:pointer;align-items:center
 }
+.profile img{width:40px;height:40px;border-radius:50%}
+
+.profile-menu{
+display:none;position:fixed;top:60px;right:20px;background:white;padding:15px;border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,0.2)
+}
+
+.edit{
+display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+background:white;padding:25px;border-radius:12px
+}
+
+.history{
+display:none;position:fixed;top:120px;right:20px;background:white;padding:15px;border-radius:12px;
+max-width:250px;box-shadow:0 0 15px rgba(0,0,0,0.2)
+}
+.history p{cursor:pointer;margin:5px 0}
 </style>
 </head>
 
 <body>
 
+<!-- профиль -->
+<div class="profile" onclick="toggleMenu()">
+<img id="avatar" src="https://i.imgur.com/4YQZ4qT.jpg">
+<span id="name">Пользователь</span>
+</div>
+
+<div id="profileMenu" class="profile-menu">
+<p><b id="menuName">Пользователь</b></p>
+<button onclick="editProfile()">Изменить профиль</button>
+<button onclick="showHistory()">История поиска</button>
+</div>
+
+<div id="editProfile" class="edit">
+<h3>Профиль</h3>
+<input id="newName" placeholder="Имя">
+<input id="newAvatar" placeholder="Ссылка на аватар">
+<button onclick="saveProfile()">Сохранить</button>
+</div>
+
+<div id="historyBox" class="history"></div>
+
+<!-- поиск -->
 <div class="logo">
-  <span class="m">М</span><span class="t">уринет</span>
+<span class="m">М</span><span class="t">уринет</span>
 </div>
 
 <br>
-
 <input id="q" placeholder="Найти в Муринете">
 <br>
 <button onclick="goSearch()">Найти</button>
 
 <script>
+
+// переход к поиску
 function goSearch(){
-  let q=document.getElementById("q").value;
-  window.location.href="search.html?q="+encodeURIComponent(q);
+let q=document.getElementById("q").value;
+saveSearch(q);
+window.location.href="search.html?q="+encodeURIComponent(q);
 }
+
+// профиль
+let avatar=document.getElementById("avatar");
+let name=document.getElementById("name");
+let menu=document.getElementById("profileMenu");
+
+function toggleMenu(){menu.style.display=menu.style.display=="block"?"none":"block"}
+function editProfile(){document.getElementById("editProfile").style.display="block"}
+
+function saveProfile(){
+let newName=document.getElementById("newName").value;
+let newAvatar=document.getElementById("newAvatar").value;
+
+if(newName){
+localStorage.setItem("murinet_name",newName);
+name.innerText=newName;
+menuName.innerText=newName;
+}
+if(newAvatar){
+localStorage.setItem("murinet_avatar",newAvatar);
+avatar.src=newAvatar;
+}
+document.getElementById("editProfile").style.display="none";
+}
+
+window.onload=function(){
+let savedName=localStorage.getItem("murinet_name");
+let savedAvatar=localStorage.getItem("murinet_avatar");
+if(savedName){name.innerText=savedName;menuName.innerText=savedName}
+if(savedAvatar){avatar.src=savedAvatar}
+}
+
+// история поиска
+function saveSearch(query){
+let history=JSON.parse(localStorage.getItem("murinet_history")||"[]");
+history.unshift(query);
+history=history.slice(0,10);
+localStorage.setItem("murinet_history",JSON.stringify(history));
+}
+
+function showHistory(){
+let box=document.getElementById("historyBox");
+let history=JSON.parse(localStorage.getItem("murinet_history")||"[]");
+box.innerHTML="<b>История поиска</b>";
+history.forEach(q=>{
+box.innerHTML+=`<p onclick="repeatSearch('${q}')">${q}</p>`;
+});
+box.style.display="block";
+}
+
+function repeatSearch(q){
+window.location.href="search.html?q="+encodeURIComponent(q);
+}
+
 </script>
 
 </body>
