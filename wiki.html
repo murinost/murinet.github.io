@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -7,49 +7,48 @@
 <style>
 
 body{
-  font-family:Arial;
-  margin:0;
-  background:#f6f6f6;
+font-family:Arial;
+margin:0;
+background:#f6f6f6;
 }
 
 .header{
-  background:white;
-  padding:15px;
-  border-bottom:1px solid #ddd;
+background:white;
+padding:15px;
+border-bottom:1px solid #ddd;
 }
 
 .logo{
-  font-size:30px;
-  font-weight:bold;
-  cursor:pointer;
+font-size:30px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .logo .m{color:red;}
 .logo .t{color:black;}
 
 .content{
-  max-width:900px;
-  margin:30px auto;
-  background:white;
-  padding:30px;
-  border-radius:10px;
+max-width:900px;
+margin:30px auto;
+background:white;
+padding:30px;
+border-radius:10px;
 }
 
 img{
-  width:100%;
-  border-radius:10px;
-  margin:15px 0;
+width:100%;
+border-radius:10px;
+margin:15px 0;
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <span class="logo" onclick="home()">
-    <span class="m">М</span><span class="t">уринет</span>
-  </span>
+<span class="logo" onclick="home()">
+<span class="m">М</span><span class="t">уринет</span>
+</span>
 </div>
 
 <div class="content" id="article"></div>
@@ -57,7 +56,7 @@ img{
 <script>
 
 function home(){
-  window.location.href="index.html";
+window.location.href="index.html";
 }
 
 let params=new URLSearchParams(window.location.search);
@@ -65,34 +64,34 @@ let topic=(params.get("topic")||"").toLowerCase();
 let a=document.getElementById("article");
 
 if(topic.includes("фог")){
-  a.innerHTML=`
-  <h1>Фог — ВикиМурино</h1>
-  <img src="https://i.ytimg.com/vi/GkD7IOkE-a8/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AGCBoAC0AWKAgwIABABGHIgPChXMA8=&amp;rs=AOn4CLDTvsgthV087dn9f2OdK6RLVkOf_w">
-  <p><b>Фог Мурино</b> — персонаж мемной культуры Мурино.</p>
-  <p>Упоминается в интернет-шутках, видео и сообществах.</p>
-  `;
+a.innerHTML=`
+<h1>Фог — ВикиМурино</h1>
+<img src="https://i.ytimg.com/vi/GkD7IOkE-a8/maxresdefault.jpg">
+<p><b>Фог Мурино</b> — персонаж мемной культуры Мурино.</p>
+<p>Упоминается в интернет-шутках, видео и сообществах.</p>
+`;
 }
 
 else if(topic.includes("мурино")){
-  a.innerHTML=`
-  <h1>Мурино — ВикиМурино</h1>
-  <img src="https://spb.101novostroyka.ru/upload/medialibrary/660/6604a07fea5a92e47ba520f911b169a9.jpg">
-  <p><b>Мурино</b> — центр мемной интернет-культуры.</p>
-  <p>Связан с переводчиками, стримерами и локальными мемами.</p>
-  `;
+a.innerHTML=`
+<h1>Мурино — ВикиМурино</h1>
+<img src="https://spb.101novostroyka.ru/upload/medialibrary/660/6604a07fea5a92e47ba520f911b169a9.jpg">
+<p><b>Мурино</b> — центр мемной интернет-культуры.</p>
+<p>Связан с переводчиками, стримерами и локальными мемами.</p>
+`;
 }
 
 else if(topic.includes("меллстрой") || topic.includes("mellstroy")){
-  a.innerHTML=`
-  <h1>Меллстрой — ВикиМурино</h1>
-  <img src="https://static.wikia.nocookie.net/db1da172-4b29-4405-973b-fb65f447b8aa/scale-to-width/755">
-  <p><b>Меллстрой</b> — интернет-персона и стример.</p>
-  <p>Часто фигурирует в мемах и контенте муринского сообщества.</p>
-  `;
+a.innerHTML=`
+<h1>Меллстрой — ВикиМурино</h1>
+<img src="https://static.wikia.nocookie.net/db1da172-4b29-4405-973b-fb65f447b8aa/scale-to-width/755">
+<p><b>Меллстрой</b> — интернет-персона и стример.</p>
+<p>Часто фигурирует в мемах и контенте муринского сообщества.</p>
+`;
 }
 
 else{
-  a.innerHTML="<h1>Статья не найдена</h1>";
+a.innerHTML="<h1>Статья не найдена</h1>";
 }
 
 </script>
